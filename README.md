@@ -1,5 +1,9 @@
 # Operating Systems Practicals (Python)
 
+Programs for Practical 4 to 12. Run every file from the VS Code terminal.
+
+> Use whichever works on your computer: `python filename.py`, `python3 filename.py` or `py filename.py`. (On older Windows PCs and Linux, `python3` or `py` may be the one that works. All commands below are written with `python`.)
+
 ---
 
 ## Practical 4(i): Same program, same code
@@ -29,10 +33,10 @@ if __name__ == "__main__":
 python 04a_same_code.py
 ```
 
-**Sample output** (process IDs will be different on your computer):
+**Output** (process IDs will be different every time):
 ```text
-Hello from PARENT | PID = 156 | Parent PID = 155
-Hello from CHILD | PID = 158 | Parent PID = 156
+Hello from PARENT | PID = 11768 | Parent PID = 12440
+Hello from CHILD | PID = 11496 | Parent PID = 11768
 ```
 
 **Explanation:**
@@ -81,15 +85,15 @@ if __name__ == "__main__":
 python 04b_different_code.py
 ```
 
-**Sample output** (process IDs will be different on your computer):
+**Output** (process IDs will be different every time):
 ```text
-PARENT (PID 159): running parent code
+PARENT (PID 8872): running parent code
 PARENT : counting 1
 PARENT : counting 2
 PARENT : counting 3
-CHILD  (PID 161): running child code
+CHILD  (PID 15304): running child code
 CHILD  : now starting another program (exec-like)
-Python 3.12.3
+Python 3.10.11
 ```
 
 **Explanation:**
@@ -130,10 +134,10 @@ if __name__ == "__main__":
 python 04c_parent_waits.py
 ```
 
-**Sample output** (process IDs will be different on your computer):
+**Output** (process IDs will be different every time):
 ```text
-PARENT (PID 163): waiting for the child to finish...
-CHILD  (PID 165): working...
+PARENT (PID 2232): waiting for the child to finish...
+CHILD  (PID 276): working...
 CHILD  : task finished
 PARENT : child finished, parent terminating
 ```
@@ -278,17 +282,41 @@ except OSError as error:
     print("Copy failed:", error)
 ```
 
-**Run:**
+**Run (method 1: type the file names when the program asks):**
+
+Step 1: create a test file (in the terminal)
 ```bash
 echo hello os > a.txt
-python 07_file_copy.py a.txt b.txt
+```
+
+Step 2: run the program and type the file names when asked
+```bash
+python 07_file_copy.py
+```
+
+```text
+Source file: a.txt
+Destination file: b.txt
+File copied successfully.
+```
+
+Step 3: check the copied file (`type` on Windows, `cat` on Linux)
+```bash
 type b.txt
 ```
 
-**Sample output**:
+```text
+hello os
+```
+
+**Run (method 2: give the file names in the command):**
+
+```bash
+python 07_file_copy.py a.txt b.txt
+```
+
 ```text
 File copied successfully.
-hello os
 ```
 
 **Explanation:**
@@ -296,7 +324,6 @@ hello os
 - `os.read()` reads a block of 1024 bytes and `os.write()` writes it, in a loop until the file ends.
 - `os.O_BINARY` (Windows only) makes sure that the bytes are copied without any change.
 - `os.close()` closes both files.
-- On Linux/macOS use `cat b.txt` instead of `type b.txt`. If you run the program without the two file names, it asks for them.
 
 ---
 
@@ -335,17 +362,13 @@ print(f"Average Turnaround Time = {total_tat / n:.2f}")
 python 08_fcfs.py
 ```
 
-**Sample input:**
+**Sample run** (text after each colon is typed by the user):
 ```text
-3
-0 5
-1 3
-2 8
-```
+Number of processes: 3
+P1 arrival time and burst time: 0 5
+P2 arrival time and burst time: 1 3
+P3 arrival time and burst time: 2 8
 
-**Sample output**:
-```text
-P1 arrival time and burst time: P2 arrival time and burst time: P3 arrival time and burst time: 
 PID	AT	BT	CT	TAT	WT
 P1	0	5	5	5	0
 P2	1	3	8	7	4
@@ -405,17 +428,13 @@ print(f"Average Turnaround Time = {total_tat / n:.2f}")
 python 09_sjf.py
 ```
 
-**Sample input:**
+**Sample run** (text after each colon is typed by the user):
 ```text
-3
-0 5
-1 3
-2 8
-```
+Number of processes: 3
+P1 arrival time and burst time: 0 5
+P2 arrival time and burst time: 1 3
+P3 arrival time and burst time: 2 8
 
-**Sample output**:
-```text
-P1 arrival time and burst time: P2 arrival time and burst time: P3 arrival time and burst time: 
 PID	AT	BT	CT	TAT	WT
 P1	0	5	5	5	0
 P2	1	3	8	7	4
@@ -476,17 +495,13 @@ print(f"Average Turnaround Time = {total_tat / n:.2f}")
 python 10_priority.py
 ```
 
-**Sample input:**
+**Sample run** (text after each colon is typed by the user):
 ```text
-3
-0 5 2
-1 3 1
-2 8 3
-```
+Number of processes: 3
+P1 arrival time, burst time and priority: 0 5 2
+P2 arrival time, burst time and priority: 1 3 1
+P3 arrival time, burst time and priority: 2 8 3
 
-**Sample output**:
-```text
-P1 arrival time, burst time and priority: P2 arrival time, burst time and priority: P3 arrival time, burst time and priority: 
 PID	AT	BT	Pri	CT	TAT	WT
 P1	0	5	2	5	5	0
 P2	1	3	1	8	7	4
@@ -512,23 +527,24 @@ Average Turnaround Time = 8.67
 ```python
 import threading
 
-total = 0
-
-
-def calculate_sum(n):
-    global total
-    for i in range(1, n + 1):
-        total += i
-
-
 n = int(input("Enter n: "))
-if n < 0:
-    print("Please enter a non-negative number.")
-else:
-    t = threading.Thread(target=calculate_sum, args=(n,))
-    t.start()        # thread starts calculating
-    t.join()         # main program waits for the thread
-    print(f"Sum of first {n} numbers = {total}")
+nums = list(map(int, input(f"Enter {n} numbers: ").split()))
+result = [0, 0]
+
+
+def partial_sum(i, part):
+    result[i] = sum(part)
+
+
+mid = n // 2
+t1 = threading.Thread(target=partial_sum, args=(0, nums[:mid]))
+t2 = threading.Thread(target=partial_sum, args=(1, nums[mid:]))
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+
+print("Sum of", n, "numbers =", result[0] + result[1])
 ```
 
 **Run:**
@@ -536,20 +552,18 @@ else:
 python 11_thread_sum.py
 ```
 
-**Sample input:**
+**Sample run** (text after each colon is typed by the user):
 ```text
-10
-```
-
-**Sample output**:
-```text
-Sum of first 10 numbers = 55
+Enter n: 5
+Enter 5 numbers: 10 20 30 40 50
+Sum of 5 numbers = 150
 ```
 
 **Explanation:**
-- Python's `threading` module is the equivalent of Pthreads. `Thread(target=..., args=...)` creates a thread.
-- `t.start()` starts it and the thread adds the numbers 1 to n.
-- `t.join()` makes the main program wait until the thread finishes, then the result is printed.
+- Python's `threading` module is the equivalent of Pthreads.
+- The numbers are split into two halves. Thread `t1` adds the first half and thread `t2` adds the second half.
+- `t.start()` starts a thread and `t.join()` makes the main program wait until it finishes.
+- The final sum is the sum of the two partial results.
 
 ---
 
@@ -594,15 +608,11 @@ allocate(blocks, procs, "worst")
 python 12_memory_allocation.py
 ```
 
-**Sample input:**
+**Sample run** (text after each colon is typed by the user):
 ```text
-100 500 200 300 600
-212 417 112 426
-```
+Block sizes (separated by spaces): 100 500 200 300 600
+Process sizes (separated by spaces): 212 417 112 426
 
-**Sample output**:
-```text
-Block sizes (separated by spaces): Process sizes (separated by spaces): 
 --- FIRST FIT ---
 Process	Size	Block
 P1	212	Block 2
