@@ -1,8 +1,374 @@
-# Operating Systems Practicals (Python)
+# Operating Systems Practicals
 
-Programs for Practical 4 to 12. Run every file from the VS Code terminal.
+Practical 1 is an OS simulator demo, Practical 2 and 3 are Linux commands, and Practical 4 to 12 are Python programs (run every file from the VS Code terminal).
 
 > Use whichever works on your computer: `python filename.py`, `python3 filename.py` or `py filename.py`. (On older Windows PCs and Linux, `python3` or `py` may be the one that works. All commands below are written with `python`.)
+
+---
+
+## Practical 1: Operating System functions using OS Simulator
+
+**Question:** Demonstration of various Operating System functions using OS Simulator.
+
+**Tool used:** OS Sim (a Java-based operating system simulator). It has four modules: CPU (process scheduling), RAM (memory management), File System and Disk (disk scheduling).
+
+**Main window**
+
+![Main window](images/q1_os_sim_main_window.jpeg)
+
+**CPU scheduling: Shortest Job First (SJF, preemptive)**
+
+![CPU scheduling: Shortest Job First (SJF, preemptive)](images/q1_cpu_scheduling_sjf.jpeg)
+
+**Memory management: contiguous allocation, variable-size partitions (Best Fit)**
+
+![Memory management: contiguous allocation, variable-size partitions (Best Fit)](images/q1_memory_best_fit.jpeg)
+
+**Disk scheduling: FIFO (First In First Out)**
+
+![Disk scheduling: FIFO (First In First Out)](images/q1_disk_scheduling_fifo.jpeg)
+
+**Explanation:**
+- CPU scheduling decides which process gets the CPU next. SJF picks the process with the shortest burst time.
+- Memory management decides where each process is placed in memory. Best fit uses the smallest free partition that is big enough.
+- Disk scheduling decides the order in which disk requests are served. FIFO serves them in the order they arrive.
+
+---
+
+## Practical 2 and 3: Setup
+
+Practical 2 and 3 are Linux commands (Kali, Ubuntu or WSL). Create the sample files first and keep them for both practicals.
+
+```bash
+echo "hello world" > file1.txt
+printf "apple\nbanana\ncherry\n" > file2.txt
+printf "apple\nmango\ncherry\n" > file3.txt
+ls
+cat file1.txt file2.txt file3.txt
+```
+
+**Sample output:**
+```text
+$ ls
+file1.txt
+file2.txt
+file3.txt
+$ cat file1.txt file2.txt file3.txt
+hello world
+apple
+banana
+cherry
+apple
+mango
+cherry
+```
+
+---
+
+## Practical 2(i): Information maintenance
+
+**Question:** Execute various Linux commands for information maintenance: wc, clear, cal, who, date, pwd.
+
+**Commands:**
+```bash
+wc file2.txt
+cal
+who
+date
+pwd
+clear
+```
+
+**Sample output** (names, dates and process IDs will be different on your system):
+```text
+$ wc file2.txt
+ 3  3 20 file2.txt
+$ cal
+   November 2026
+Su Mo Tu We Th Fr Sa
+ 1  2  3  4  5  6  7
+ 8  9 10 11 12 13 14
+15 16 17 18 19 20 21
+22 23 24 25 26 27 28
+29 30
+$ who
+(lists the users who are logged in)
+$ date
+Wed Nov 25 00:42:37 UTC 2026
+$ pwd
+/home/user
+$ clear
+(clears the terminal screen)
+```
+
+**What the commands do:**
+
+| Command | Purpose |
+|---|---|
+| `wc file2.txt` | counts lines, words and bytes of a file |
+| `cal` | shows the calendar (install with `sudo apt install ncal` if it is missing) |
+| `who` | lists the users who are logged in |
+| `date` | shows the current date and time |
+| `pwd` | prints the present working directory |
+| `clear` | clears the terminal screen |
+
+---
+
+## Practical 2(ii): File management
+
+**Question:** Execute various Linux commands for file management: cat, cp, rm, mv, cmp, comm, diff, find, grep, awk.
+
+**Commands:**
+```bash
+cat file1.txt
+cp file1.txt copy1.txt
+mv copy1.txt renamed.txt
+cmp file2.txt file3.txt
+comm file2.txt file3.txt
+diff file2.txt file3.txt
+find . -name "*.txt"
+grep "apple" file2.txt
+awk '{print NR, $0}' file2.txt
+rm renamed.txt
+```
+
+**Sample output** (names, dates and process IDs will be different on your system):
+```text
+$ cat file1.txt
+hello world
+$ cp file1.txt copy1.txt
+$ mv copy1.txt renamed.txt
+$ cmp file2.txt file3.txt
+file2.txt file3.txt differ: char 7, line 2
+$ comm file2.txt file3.txt
+		apple
+banana
+cherry
+	mango
+comm: file 2 is not in sorted order
+	cherry
+comm: input is not in sorted order
+$ diff file2.txt file3.txt
+2c2
+< banana
+---
+> mango
+$ find . -name "*.txt"
+./file2.txt
+./file3.txt
+./renamed.txt
+./file1.txt
+$ grep "apple" file2.txt
+apple
+$ awk '{print NR, $0}' file2.txt
+1 apple
+2 banana
+3 cherry
+$ rm renamed.txt
+```
+
+**What the commands do:**
+
+| Command | Purpose |
+|---|---|
+| `cat` | displays the contents of a file |
+| `cp` | copies a file |
+| `mv` | moves or renames a file |
+| `cmp` | compares two files byte by byte and reports the first difference |
+| `comm` | compares two sorted files in three columns (only in file 1, only in file 2, in both); it warns if a file is not sorted |
+| `diff` | shows which lines differ between two files |
+| `find` | searches for files by name |
+| `grep` | prints the lines that contain a pattern |
+| `awk` | processes text line by line (here it prints the line number and the line) |
+| `rm` | deletes a file |
+
+---
+
+## Practical 2(iii): Directory management
+
+**Question:** Execute various Linux commands for directory management: cd, mkdir, rmdir, ls.
+
+**Commands:**
+```bash
+mkdir demo
+cd demo
+pwd
+cd ..
+ls
+ls -l
+mkdir demo2
+rmdir demo2
+```
+
+**Sample output** (names, dates and process IDs will be different on your system):
+```text
+$ mkdir demo
+$ cd demo
+$ pwd
+/home/user/demo
+$ cd ..
+$ ls
+demo
+file1.txt
+file2.txt
+file3.txt
+$ ls -l
+total 16
+drwxr-xr-x 2 user user 4096 Nov 25 00:42 demo
+-rw-r--r-- 1 user user   12 Nov 25 00:42 file1.txt
+-rw-r--r-- 1 user user   20 Nov 25 00:42 file2.txt
+-rw-r--r-- 1 user user   19 Nov 25 00:42 file3.txt
+$ mkdir demo2
+$ rmdir demo2
+```
+
+**What the commands do:**
+
+| Command | Purpose |
+|---|---|
+| `mkdir` | creates a directory |
+| `cd` | changes the current directory (`cd ..` goes one level up) |
+| `ls, ls -l` | lists files; `-l` gives the long format with permissions, owner, size and date |
+| `rmdir` | removes an empty directory |
+
+---
+
+## Practical 3(i): Process control
+
+**Question:** Execute various Linux commands for process control: fork, getpid, ps, kill, sleep.
+
+**Commands:**
+```bash
+echo $$
+sleep 100 &
+ps
+ps -f
+kill $!
+ps
+```
+
+**Sample output** (names, dates and process IDs will be different on your system):
+```text
+$ echo $$
+326
+$ sleep 100 &
+$ ps
+  PID TTY          TIME CMD
+  326 ?        00:00:00 -bash
+  327 ?        00:00:00 sleep
+  328 ?        00:00:00 ps
+$ ps -f
+UID        PID  PPID  C STIME TTY          TIME CMD
+user       326   150  0 00:42 ?        00:00:00 -bash
+user       327   326  0 00:42 ?        00:00:00 sleep 100
+user       329   326  0 00:42 ?        00:00:00 ps -f
+$ kill $!
+$ ps
+  PID TTY          TIME CMD
+  326 ?        00:00:00 -bash
+  330 ?        00:00:00 ps
+```
+
+**What the commands do:**
+
+| Command | Purpose |
+|---|---|
+| `echo $$` | prints the PID of the current shell (like getpid) |
+| `sleep 100 &` | runs `sleep` for 100 seconds in the background |
+| `ps, ps -f` | lists running processes (`-f` is the full format with the parent PID) |
+| `kill $!` | terminates the last background process (`$!` holds its PID) |
+| `fork()` | demonstrated with programs in Practical 4 |
+
+---
+
+## Practical 3(ii): Communication (redirection and pipe)
+
+**Question:** Execute various Linux commands for communication: input-output redirection and pipe.
+
+**Commands:**
+```bash
+ls > list.txt
+cat list.txt
+echo "extra line" >> list.txt
+sort < list.txt
+ls | wc -l
+cat file2.txt | grep an
+```
+
+**Sample output** (names, dates and process IDs will be different on your system):
+```text
+$ ls > list.txt
+$ cat list.txt
+demo
+file1.txt
+file2.txt
+file3.txt
+list.txt
+$ echo "extra line" >> list.txt
+$ sort < list.txt
+demo
+extra line
+file1.txt
+file2.txt
+file3.txt
+list.txt
+$ ls | wc -l
+5
+$ cat file2.txt | grep an
+banana
+```
+
+**What the commands do:**
+
+| Command | Purpose |
+|---|---|
+| `>` | redirects output to a file (overwrites it) |
+| `>>` | appends output to a file |
+| `<` | takes input from a file |
+| `\|` | pipe: sends the output of one command as the input of the next |
+
+---
+
+## Practical 3(iii): Protection management
+
+**Question:** Execute various Linux commands for protection management: chmod, chown, chgrp.
+
+**Commands:**
+```bash
+ls -l file1.txt
+chmod 755 file1.txt
+ls -l file1.txt
+chmod 600 file1.txt
+ls -l file1.txt
+sudo chown $USER file1.txt
+chgrp $(id -gn) file1.txt
+ls -l file1.txt
+```
+
+**Sample output** (names, dates and process IDs will be different on your system):
+```text
+$ ls -l file1.txt
+-rw-r--r-- 1 user user 12 Nov 25 00:42 file1.txt
+$ chmod 755 file1.txt
+$ ls -l file1.txt
+-rwxr-xr-x 1 user user 12 Nov 25 00:42 file1.txt
+$ chmod 600 file1.txt
+$ ls -l file1.txt
+-rw------- 1 user user 12 Nov 25 00:42 file1.txt
+$ sudo chown $USER file1.txt
+$ chgrp $(id -gn) file1.txt
+$ ls -l file1.txt
+-rw------- 1 user user 12 Nov 25 00:42 file1.txt
+```
+
+**What the commands do:**
+
+| Command | Purpose |
+|---|---|
+| `chmod 755` | owner can read, write and execute; group and others can read and execute (`rwxr-xr-x`) |
+| `chmod 600` | only the owner can read and write (`rw-------`) |
+| `chown` | changes the owner of a file |
+| `chgrp` | changes the group of a file |
 
 ---
 
